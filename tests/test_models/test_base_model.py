@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """Unit tests for the BaseModel"""
-import unittest
 import models
-from models.base_model import BaseModel
-from datetime import datetime
+import unittest
 import uuid
+from datetime import datetime
+from models.base_model import BaseModel
 
 
 class TestBaseModel(unittest.TestCase):
