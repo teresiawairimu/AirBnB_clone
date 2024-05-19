@@ -1,4 +1,7 @@
-import unittest 
+#!/usr/bin/python3
+"""Unit tests for the BaseModel"""
+import unittest
+import models
 from models.base_model import BaseModel
 from datetime import datetime
 import uuid
