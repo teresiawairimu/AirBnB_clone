@@ -3,10 +3,11 @@
 
 import json
 import os
+from models.base_model import BaseModel
 
 
 class FileStorage:
-    """Serializes instances and deserializes JSON file""""
+    """Serializes instances and deserializes JSON file"""
 
     __file_path = "file.json"
     __objects = {}
@@ -17,7 +18,7 @@ class FileStorage:
 
     def new(self, obj):
         """sets in __objects to the obj with key <obk class name>.id"""
-        key = f"{obj.__class__name.__name__}.{obj.id}"
+        key = f"{obj.__class__.__name__}.{obj.id}"
         FileStorage.__objects[key] = obj
 
     def save(self):
@@ -29,10 +30,13 @@ class FileStorage:
 
     def reload(self):
         """deserialize the JSON file to __objects, otherwise, do nothing"""
-        if os.path.exists(FileStorage.__file_path):
-            with open(FileStorage.__file_path, 'r') as f:
-                obj_dict = json.load(f)
-                for key, value in obj_dict.items():
-                    cls_name = key.split('.')[0]
-                    cls = globals()[cls_name]
-                    FileStorage.__objects[key] = cls(**value)
+        try:
+            if os.path.exists(FileStorage.__file_path):
+                with open(FileStorage.__file_path, 'r') as f:
+                    obj_dict = json.load(f)
+                    for key, value in obj_dict.items():
+                        cls_name = value["__class__"]
+                        del value["__class__"]
+                        self.new(eval(cls_name)(**value))
+        except FileNotFoundError:
+            return

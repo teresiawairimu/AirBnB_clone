@@ -3,7 +3,7 @@
 
 from datetime import datetime
 import uuid
-from models.__init__ import storage
+import models
 
 
 class BaseModel:
@@ -23,23 +23,24 @@ class BaseModel:
             args: allows for any number of positional arguments
             kwargs: allows for any number of keyword arguments
         """
+
+        self.id = str(uuid.uuid4())
+        self.name = ""
+        self.created_at = datetime.now()
+        self.updated_at = self.created_at
         if kwargs:
             for key, value in kwargs.items():
-                if key == 'created_at' or key == 'update_at':
+                if key == 'created_at' or key == 'updated_at':
                     value = datetime.fromisoformat(value)
                 if key != '__class__':
                     setattr(self, key, value)
         else:
-            self.id = str(uuid.uuid4())
-            self.name = ""
-            self.created_at = datetime.now()
-            self.updated_at = self.created_at
-            storage.new(self)
+            models.storage.new(self)
 
     def save(self):
         """Updates updated-at with the current datetime"""
         self.updated_at = datetime.now()
-        storage.save()
+        models.storage.save()
 
     def to_dict(self):
         """Return dictionary containing keys/values of instance's __dict__"""

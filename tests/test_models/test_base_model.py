@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 """Unit tests for the BaseModel"""
-import models
+###import models
 import unittest
 import uuid
 from datetime import datetime
 from models.base_model import BaseModel
-
+from time import sleep
 
 class TestBaseModel(unittest.TestCase):
     """This class contains the Unit tests for the BaseModel class."""
@@ -19,6 +19,12 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(new_model.name, "")
         self.assertIsInstance(new_model.created_at, datetime)
         self.assertEqual(new_model.updated_at, new_model.created_at)
+
+
+    def test_sleep_and_assert_true(self):
+        """Test that sleeps for 2 seconds and always asserts True"""
+        sleep(2)
+        self.assertTrue(True)
 
 
 if __name__ == '__main__':
